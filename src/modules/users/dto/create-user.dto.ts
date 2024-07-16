@@ -2,6 +2,7 @@ import { hashSync } from 'bcryptjs';
 import { Transform } from 'class-transformer';
 import {
   IsBoolean,
+  IsDate,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -23,6 +24,14 @@ export class CreateUserDto {
     groups: ['transform'],
   })
   password: string;
+
+  @IsString()
+  @IsOptional()
+  passwordResetToken: string;
+
+  @IsDate()
+  @IsOptional()
+  passwordResetExpires: Date;
 
   @IsBoolean()
   @IsOptional()

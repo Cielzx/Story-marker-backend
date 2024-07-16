@@ -17,7 +17,7 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
 
     const { categoryId } = data;
 
-    const newCategorie = await this.prisma.categorie.create({
+    const newCategorie = await this.prisma.subCategorie.create({
       data: {
         id: categories.id,
         item_name: data.item_name,
@@ -29,12 +29,12 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
   }
 
   async findAll(): Promise<CategoriesEntity[]> {
-    const categories = await this.prisma.categorie.findMany({
+    const categories = await this.prisma.subCategorie.findMany({
       select: {
         id: true,
         item_name: true,
         categoryId: true,
-        figures: {
+        stickers: {
           select: {
             id: true,
             figure_name: true,
@@ -56,7 +56,7 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
   // }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.categorie.delete({
+    await this.prisma.subCategorie.delete({
       where: {
         id,
       },

@@ -14,7 +14,7 @@ import { FigureServices } from './figures.service';
 import { FigureDto } from './dto/figures.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-@Controller('figures')
+@Controller('stickers')
 export class figureControllers {
   constructor(private readonly figureService: FigureServices) {}
 
@@ -42,7 +42,7 @@ export class figureControllers {
     files: {
       figure_image?: Express.Multer.File[];
     },
-    @Param() id: string,
+    @Param('id') id: string,
   ) {
     const { figure_image } = files;
     return this.figureService.upload(figure_image[0], id);

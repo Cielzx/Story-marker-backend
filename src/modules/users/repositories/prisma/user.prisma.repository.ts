@@ -4,6 +4,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { User } from '../../entities/user.entity';
 import { plainToInstance } from 'class-transformer';
+import { UpdateUserDto } from '../../dto/update-user.dto';
 
 @Injectable()
 export class UsersPrismaRepo implements UsersRepository {
@@ -33,7 +34,27 @@ export class UsersPrismaRepo implements UsersRepository {
   }
 
   async findAll(): Promise<User[]> {
-    const users = this.prisma.user.findMany();
+    const users = this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        is_admin: true,
+        password: true,
+        favorites: {
+          select: {
+            id: true,
+            sticker: {
+              select: {
+                id: true,
+                figure_name: true,
+                figure_image: true,
+              },
+            },
+          },
+        },
+      },
+    });
     return users;
   }
 
@@ -41,6 +62,24 @@ export class UsersPrismaRepo implements UsersRepository {
     const user = this.prisma.user.findUnique({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        is_admin: true,
+        favorites: {
+          select: {
+            id: true,
+            sticker: {
+              select: {
+                id: true,
+                figure_name: true,
+                figure_image: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -55,6 +94,15 @@ export class UsersPrismaRepo implements UsersRepository {
     });
 
     return user;
+  }
+
+  async update(data: UpdateUserDto, id: string): Promise<User> {
+    const updateFigure = await this.prisma.user.update({
+      where: { id },
+      data: { ...data },
+    });
+
+    return plainToInstance(User, updateFigure);
   }
 
   async delete(id: string): Promise<void> {

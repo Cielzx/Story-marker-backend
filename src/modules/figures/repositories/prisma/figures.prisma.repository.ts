@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FigureRepository } from '../figures.repository';
 import { PrismaService } from 'src/database/prisma.service';
 import { FigureDto } from '../../dto/figures.dto';
@@ -17,7 +17,7 @@ export class FigurePrismaRepo implements FigureRepository {
 
     const { subCategoryId } = data;
 
-    const newFigure = await this.prisma.figures.create({
+    const newFigure = await this.prisma.sticker.create({
       data: {
         id: figure.id,
         figure_name: data.figure_name,
@@ -30,13 +30,16 @@ export class FigurePrismaRepo implements FigureRepository {
   }
 
   async findAll(): Promise<FigureEntity[]> {
-    const AllFigures = await this.prisma.figures.findMany();
+    const AllFigures = await this.prisma.sticker.findMany();
 
     return AllFigures;
   }
 
   async findOne(id: string): Promise<FigureEntity> {
-    const figure = await this.prisma.figures.findUnique({
+    if (!id) {
+      throw new NotFoundException('id must be provided!');
+    }
+    const figure = await this.prisma.sticker.findUnique({
       where: { id },
     });
 
@@ -44,7 +47,7 @@ export class FigurePrismaRepo implements FigureRepository {
   }
 
   async update(data: FigureDto, id: string): Promise<FigureEntity> {
-    const updateFigure = await this.prisma.figures.update({
+    const updateFigure = await this.prisma.sticker.update({
       where: { id },
       data: { ...data },
     });
@@ -53,7 +56,7 @@ export class FigurePrismaRepo implements FigureRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.figures.delete({
+    await this.prisma.sticker.delete({
       where: {
         id,
       },

@@ -1,4 +1,3 @@
-import { Categorie } from '@prisma/client';
 import { CategoriesDto } from '../dto/categories.dto';
 import { CategoriesEntity } from '../entities/categories.entities';
 

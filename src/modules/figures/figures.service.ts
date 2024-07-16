@@ -23,7 +23,7 @@ export class FigureServices {
     const figure = await this.figureRepository.findOne(id);
 
     if (!figure) {
-      throw new NotFoundException();
+      throw new NotFoundException('Figure not found!');
     }
     return figure;
   }

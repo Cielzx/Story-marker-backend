@@ -7,6 +7,9 @@ export class User {
   email: string;
   is_admin: boolean;
 
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+
   @Exclude()
   password: string;
 

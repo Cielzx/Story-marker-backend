@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryRepository } from '../category.repository';
 import { PrismaService } from 'src/database/prisma.service';
 // import { Category } from '@prisma/client';
@@ -44,8 +44,14 @@ export class CategoryPrismaRepo implements CategoryRepository {
   }
 
   async findOne(id: string): Promise<Category> {
+    if (!id) {
+      throw new NotFoundException('id must be provided!');
+    }
+
     const category = await this.prisma.category.findUnique({
-      where: { id },
+      where: {
+        id,
+      },
     });
 
     return plainToInstance(Category, category);

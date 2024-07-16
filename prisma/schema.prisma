@@ -19,7 +19,11 @@ model User {
   name String
   email String @unique
   password String
+  passwordResetToken  String?
+  passwordResetExpires DateTime?
   is_admin Boolean?
+  favorites  Favorite[]
+  
 
    @@map("users")
 }
@@ -28,27 +32,38 @@ model Category {
   id String @id
   category_name String
   cover_image String?
-  categories Categorie[]
+  categories SubCategorie[]
 
    @@map("category")
 }
 
-model Categorie {
+model SubCategorie {
   id String @id
   item_name String
   categoryId String
   category Category @relation(fields: [categoryId], references: [id])
-  figures Figures[]
+  stickers Sticker[]
 
    @@map("categories")
 }
 
-model Figures {
+model Sticker {
   id String @id
   figure_name String
   figure_image String?
-  sub_category Categorie @relation(fields: [subCategoryId], references: [id])
+  sub_category SubCategorie @relation(fields: [subCategoryId], references: [id])
   subCategoryId String
+  favorites    Favorite[]
 
   @@map("figures")
+}
+
+model Favorite {
+  id         String   @id @default(uuid())
+  userId     String
+  stickerId  String
+  user       User     @relation(fields: [userId], references: [id])
+  sticker    Sticker  @relation(fields: [stickerId], references: [id])
+
+  @@unique([userId, stickerId])
 }

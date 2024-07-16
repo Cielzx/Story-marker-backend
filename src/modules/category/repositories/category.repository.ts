@@ -7,7 +7,7 @@ export abstract class CategoryRepository {
 
   abstract findAll(): Promise<Category[]>;
 
-  abstract findOne(id: string): Promise<Category> | undefined;
+  abstract findOne(id: string): Promise<Category> | Category;
 
   abstract delete(id: string): Promise<void>;
 }
