@@ -11,7 +11,11 @@ export abstract class UsersRepository {
 
   abstract findByEmail(email: string): Promise<User> | User;
 
-  abstract update(data: UpdateUserDto, id: string): Promise<User>;
+  abstract update(
+    data: UpdateUserDto,
+    id: string,
+    currentUser: any,
+  ): Promise<User>;
 
   abstract delete(id: string): Promise<void> | void;
 }

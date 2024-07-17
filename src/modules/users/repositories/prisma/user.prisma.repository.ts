@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UsersRepository } from '../user.repository';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDto } from '../../dto/create-user.dto';
@@ -96,7 +96,13 @@ export class UsersPrismaRepo implements UsersRepository {
     return user;
   }
 
-  async update(data: UpdateUserDto, id: string): Promise<User> {
+  async update(data: UpdateUserDto, id: string, currentUser): Promise<User> {
+    if (data.is_admin !== undefined && !currentUser.is_admin) {
+      throw new ForbiddenException(
+        'You do not have permission to update the admin status',
+      );
+    }
+
     const updateFigure = await this.prisma.user.update({
       where: { id },
       data: { ...data },

@@ -29,7 +29,7 @@ export class AuthService {
   async requestPasswordReset(email: string) {
     const user = await this.UserService.findByEmail(email);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const token = uuidv4();

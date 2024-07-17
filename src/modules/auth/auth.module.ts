@@ -34,14 +34,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         from: '"Story Maker<No Reply>" <noreply@your-email.com>',
       },
       template: {
-        dir: join(
-          __dirname,
-          'src',
-          'modules',
-          'auth',
-          'templates',
-          'reset-password',
-        ),
+        dir: join(__dirname, '..', '..', '..', process.env.TEMPLATE_DIR),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,

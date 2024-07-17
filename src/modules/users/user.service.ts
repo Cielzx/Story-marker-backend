@@ -42,8 +42,8 @@ export class UserService {
     return userEmail;
   }
 
-  async update(data: UpdateUserDto, id: string) {
-    const updatedUser = await this.UserRepository.update(data, id);
+  async update(data: UpdateUserDto, id: string, currentUser: any) {
+    const updatedUser = await this.UserRepository.update(data, id, currentUser);
     return updatedUser;
   }
 

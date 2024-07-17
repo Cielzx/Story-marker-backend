@@ -47,6 +47,10 @@ export class FigurePrismaRepo implements FigureRepository {
   }
 
   async update(data: FigureDto, id: string): Promise<FigureEntity> {
+    if (!id) {
+      throw new NotFoundException('id must be provided!');
+    }
+
     const updateFigure = await this.prisma.sticker.update({
       where: { id },
       data: { ...data },

@@ -11,13 +11,14 @@ import {
 import { CategoryServices } from './category.service';
 import { CategoryDto } from './dto/category.dto';
 import { JwtAuth } from '../auth/jwt-auth.guard';
+import { AdminGuard } from '../auth/adm-auth.guard';
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryServices: CategoryServices) {}
 
   @Post('')
-  @UseGuards(JwtAuth)
+  @UseGuards(JwtAuth, AdminGuard)
   create(@Body() data: CategoryDto) {
     return this.categoryServices.create(data);
   }
@@ -35,6 +36,7 @@ export class CategoryController {
 
   @Delete(':id')
   @HttpCode(204)
+  @UseGuards(JwtAuth, AdminGuard)
   remove(@Param() id: string) {
     return this.categoryServices.remove(id);
   }

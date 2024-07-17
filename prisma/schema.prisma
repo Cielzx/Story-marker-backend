@@ -41,7 +41,7 @@ model SubCategorie {
   id String @id
   item_name String
   categoryId String
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id],onDelete: Cascade)
   stickers Sticker[]
 
    @@map("categories")
@@ -51,7 +51,7 @@ model Sticker {
   id String @id
   figure_name String
   figure_image String?
-  sub_category SubCategorie @relation(fields: [subCategoryId], references: [id])
+  sub_category SubCategorie @relation(fields: [subCategoryId], references: [id],onDelete: Cascade)
   subCategoryId String
   favorites    Favorite[]
 
@@ -63,7 +63,7 @@ model Favorite {
   userId     String
   stickerId  String
   user       User     @relation(fields: [userId], references: [id])
-  sticker    Sticker  @relation(fields: [stickerId], references: [id])
+  sticker    Sticker  @relation(fields: [stickerId], references: [id],onDelete: Cascade)
 
   @@unique([userId, stickerId])
 }

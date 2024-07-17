@@ -28,6 +28,16 @@ export class FigureServices {
     return figure;
   }
 
+  async update(data: UpdateFigureDto, id: string) {
+    const stickerUpdate = await this.figureRepository.update(data, id);
+
+    if (!id) {
+      throw new NotFoundException('Sticker not found');
+    }
+
+    return stickerUpdate;
+  }
+
   async upload(figure_image: Express.Multer.File, id: string) {
     cloud.config({
       cloud_name: process.env.CLOUD_NAME,
@@ -60,6 +70,9 @@ export class FigureServices {
   }
 
   async remove(id: string) {
+    if (!id) {
+      throw new NotFoundException('Figure not found!');
+    }
     await this.figureRepository.delete(id);
 
     return;
