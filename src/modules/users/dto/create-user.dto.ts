@@ -33,6 +33,10 @@ export class CreateUserDto {
   @IsOptional()
   passwordResetExpires: Date;
 
+  @IsString()
+  @IsOptional()
+  profile_image: string;
+
   @IsBoolean()
   @IsOptional()
   is_admin: boolean;

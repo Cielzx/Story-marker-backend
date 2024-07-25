@@ -17,10 +17,13 @@ import { FigurePrismaRepo } from './repositories/prisma/figures.prisma.repositor
         },
       }),
       fileFilter: (_, file, cb) => {
-        if (file.mimetype === 'image/jpeg') {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
           return cb(null, true);
         } else {
-          return cb(new BadRequestException('Only the jpeg allowed'), false);
+          return cb(
+            new BadRequestException('Only the jpeg and png allowed'),
+            false,
+          );
         }
       },
     }),

@@ -6,6 +6,7 @@ import {
 import { UsersRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { v2 as cloud } from 'cloudinary';
 
 @Injectable()
 export class UserService {
@@ -45,6 +46,37 @@ export class UserService {
   async update(data: UpdateUserDto, id: string, currentUser: any) {
     const updatedUser = await this.UserRepository.update(data, id, currentUser);
     return updatedUser;
+  }
+
+  async upload(profile_image: Express.Multer.File, id: string) {
+    cloud.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
+    });
+
+    const findUser = await this.UserRepository.findOne(id);
+
+    if (!findUser) {
+      throw new NotFoundException('Category not found!');
+    }
+
+    const imageUpload = await cloud.uploader.upload(
+      profile_image.path,
+      { resource_type: 'image' },
+      (error, result) => {
+        return result;
+      },
+    );
+
+    const update = await this.UserRepository.update(
+      {
+        profile_image: imageUpload.secure_url,
+      },
+      id,
+    );
+
+    return update;
   }
 
   async remove(id: string) {

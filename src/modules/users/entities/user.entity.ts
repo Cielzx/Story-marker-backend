@@ -10,6 +10,8 @@ export class User {
   passwordResetToken?: string;
   passwordResetExpires?: Date;
 
+  profile_image?: string;
+
   @Exclude()
   password: string;
 

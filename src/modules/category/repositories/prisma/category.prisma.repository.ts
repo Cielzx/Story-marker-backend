@@ -5,6 +5,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { CategoryDto } from '../../dto/category.dto';
 import { Category } from '../../entities/category.entity';
 import { plainToInstance } from 'class-transformer';
+import { UpdateCategoryDto } from '../../dto/category.update.dto';
 
 @Injectable()
 export class CategoryPrismaRepo implements CategoryRepository {
@@ -32,10 +33,19 @@ export class CategoryPrismaRepo implements CategoryRepository {
       select: {
         id: true,
         category_name: true,
+        cover_image: true,
         categories: {
           select: {
             id: true,
             item_name: true,
+            stickers: {
+              select: {
+                id: true,
+                figure_name: true,
+                figure_image: true,
+                subCategoryId: true,
+              },
+            },
           },
         },
       },
@@ -52,9 +62,52 @@ export class CategoryPrismaRepo implements CategoryRepository {
       where: {
         id,
       },
+      select: {
+        id: true,
+        category_name: true,
+        cover_image: true,
+        categories: {
+          select: {
+            id: true,
+            item_name: true,
+            cover_image: true,
+            stickers: {
+              select: {
+                id: true,
+                figure_name: true,
+                figure_image: true,
+                subCategoryId: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return plainToInstance(Category, category);
+  }
+
+  async findByName(category_name: string): Promise<Category> {
+    return await this.prisma.category.findFirst({
+      where: {
+        category_name,
+      },
+    });
+
+    // return category
+  }
+
+  async update(data: UpdateCategoryDto, id: string): Promise<Category> {
+    if (!id) {
+      throw new NotFoundException('id must be provided!');
+    }
+
+    const updateCategory = await this.prisma.category.update({
+      where: { id },
+      data: { ...data },
+    });
+
+    return updateCategory;
   }
 
   async delete(id: string): Promise<void> {

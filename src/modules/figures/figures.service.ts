@@ -48,7 +48,7 @@ export class FigureServices {
     const findFigure = await this.figureRepository.findOne(id);
 
     if (!findFigure) {
-      throw new NotFoundException('Figure not found!');
+      throw new NotFoundException('Sticker not found!');
     }
 
     const imageUpload = await cloud.uploader.upload(

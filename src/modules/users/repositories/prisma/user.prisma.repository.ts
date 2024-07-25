@@ -41,6 +41,7 @@ export class UsersPrismaRepo implements UsersRepository {
         email: true,
         is_admin: true,
         password: true,
+        profile_image: true,
         favorites: {
           select: {
             id: true,
