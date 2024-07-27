@@ -8,6 +8,13 @@ export class FavoriteServices {
 
   async create(data: FavoritesDto) {
     const favorite = await this.favoritesRepository.create(data);
+
+    const stickerId = await this.favoritesRepository.findOne(data.stickerId);
+
+    if (stickerId) {
+      throw new Error('This is already in your favorites');
+    }
+
     return favorite;
   }
 
