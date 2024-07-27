@@ -20,6 +20,8 @@ async function bootstrap() {
   );
   app.enableCors({
     origin: 'https://story-marker-backend.onrender.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
   await app.listen(3001);
   app.enableShutdownHooks();
