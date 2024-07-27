@@ -19,7 +19,10 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: 'https://story-maker-front-end.vercel.app',
+    origin: [
+      'https://story-marker-backend.onrender.com',
+      'https://story-makers-beta.vercel.app',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
