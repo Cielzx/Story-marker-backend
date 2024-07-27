@@ -24,7 +24,7 @@ async function bootstrap() {
       'https://story-marker-backend.onrender.com',
       'https://story-makers-beta.vercel.app',
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
   await app.listen(3001);
