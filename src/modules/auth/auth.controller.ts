@@ -8,7 +8,7 @@ import { User } from '../users/entities/user.entity';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('')
-  @UseGuards(LocalAuth)
+  // @UseGuards(LocalAuth)
   async login(@Body() user: LoginDto) {
     return this.authService.login(user.email);
   }
