@@ -64,7 +64,7 @@ model Favorite {
   id         String   @id @default(uuid())
   userId     String
   stickerId  String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id],onDelete: Cascade)
   sticker    Sticker  @relation(fields: [stickerId], references: [id],onDelete: Cascade)
 
   @@unique([userId, stickerId])
