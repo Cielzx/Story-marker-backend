@@ -19,7 +19,7 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: 'https://story-marker-backend.onrender.com',
   });
   await app.listen(3001);
   app.enableShutdownHooks();
