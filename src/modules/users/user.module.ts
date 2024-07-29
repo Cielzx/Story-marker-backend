@@ -6,7 +6,6 @@ import { UsersPrismaRepo } from './repositories/prisma/user.prisma.repository';
 import { UsersController } from './user.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import * as path from 'path';
 
 @Module({
   imports: [
@@ -14,24 +13,18 @@ import * as path from 'path';
       storage: diskStorage({
         destination: './temp',
         filename: (_, file, cb) => {
-          const ext = path.extname(file.originalname);
-          const fileName = `${path.basename(file.originalname, ext)}-${Date.now()}${ext}`;
-          cb(null, fileName);
+          cb(null, file.originalname);
         },
       }),
       fileFilter: (_, file, cb) => {
-        const allowedTypes = /jpg|jpeg|png|heif|heic/;
-        const extName = allowedTypes.test(
-          path.extname(file.originalname).toLowerCase(),
-        );
-        const mimeType = allowedTypes.test(file.mimetype);
-        if (mimeType && extName) {
+        if (
+          file.mimetype === 'image/jpeg' ||
+          file.mimetype === 'image/png' ||
+          file.mimetype === 'image/heif'
+        ) {
           return cb(null, true);
         } else {
-          return cb(
-            new BadRequestException(`Only the ${allowedTypes} allowed`),
-            false,
-          );
+          return cb(new BadRequestException('Format not suported'), false);
         }
       },
     }),
