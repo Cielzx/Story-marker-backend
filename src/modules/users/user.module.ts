@@ -20,7 +20,7 @@ import * as path from 'path';
         },
       }),
       fileFilter: (_, file, cb) => {
-        const allowedTypes = /jpg|jpeg|png|heif/;
+        const allowedTypes = /jpg|jpeg|png|heif|heic/;
         const extName = allowedTypes.test(
           path.extname(file.originalname).toLowerCase(),
         );
@@ -28,7 +28,10 @@ import * as path from 'path';
         if (mimeType && extName) {
           return cb(null, true);
         } else {
-          return cb(new BadRequestException('Only the jpeg allowed'), false);
+          return cb(
+            new BadRequestException(`Only the ${allowedTypes} allowed`),
+            false,
+          );
         }
       },
     }),
