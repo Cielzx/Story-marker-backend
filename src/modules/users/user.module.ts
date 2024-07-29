@@ -17,11 +17,13 @@ import { diskStorage } from 'multer';
         },
       }),
       fileFilter: (_, file, cb) => {
-        if (
-          file.mimetype === 'image/jpeg' ||
-          file.mimetype === 'image/png' ||
-          file.mimetype === 'image/heif'
-        ) {
+        const allowedMimeTypes = [
+          'image/jpeg',
+          'image/png',
+          'image/heif',
+          'image/heic',
+        ];
+        if (allowedMimeTypes.includes(file.mimetype)) {
           return cb(null, true);
         } else {
           return cb(new BadRequestException('Format not suported'), false);
