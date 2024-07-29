@@ -17,7 +17,11 @@ import { diskStorage } from 'multer';
         },
       }),
       fileFilter: (_, file, cb) => {
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        if (
+          file.mimetype === 'image/jpeg' ||
+          file.mimetype === 'image/png' ||
+          file.mimetype === 'image/heif'
+        ) {
           return cb(null, true);
         } else {
           return cb(new BadRequestException('Only the jpeg allowed'), false);
