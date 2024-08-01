@@ -18,10 +18,10 @@ import { diskStorage } from 'multer';
       }),
       fileFilter: (_, file, cb) => {
         const allowedMimeTypes = [
-          'image/jpeg',
-          'image/png',
           'image/heif',
           'image/heic',
+          'image/jpeg',
+          'image/png',
         ];
         if (allowedMimeTypes.includes(file.mimetype)) {
           return cb(null, true);
