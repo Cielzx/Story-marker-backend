@@ -4,13 +4,13 @@ import { FavoriteServices } from './favorites.service';
 import { PrismaService } from 'src/database/prisma.service';
 import { FavoriteRepository } from './repositories/favorites.repository';
 import { FavoritePrismaRepo } from './repositories/prisma/favorites.prisma.repository';
-import { UserService } from '../users/user.service';
+import { UsersModule } from '../users/user.module';
 
 @Module({
   controllers: [FavoritesControllers],
+  imports: [UsersModule],
   providers: [
     FavoriteServices,
-    UserService,
     PrismaService,
     {
       provide: FavoriteRepository,
