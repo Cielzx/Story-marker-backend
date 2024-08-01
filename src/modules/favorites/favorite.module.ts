@@ -7,8 +7,8 @@ import { FavoritePrismaRepo } from './repositories/prisma/favorites.prisma.repos
 import { UsersModule } from '../users/user.module';
 
 @Module({
-  controllers: [FavoritesControllers],
   imports: [UsersModule],
+  controllers: [FavoritesControllers],
   providers: [
     FavoriteServices,
     PrismaService,
