@@ -11,22 +11,14 @@ import {
 import { FavoriteServices } from './favorites.service';
 import { JwtAuth } from '../auth/jwt-auth.guard';
 import { FavoritesDto } from './dto/favorites.dto';
-import { UserService } from '../users/user.service';
 
 @Controller('favorites')
 export class FavoritesControllers {
-  constructor(
-    private readonly favoriteServices: FavoriteServices,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly favoriteServices: FavoriteServices) {}
 
   @Post()
   @UseGuards(JwtAuth)
   create(@Body() data: FavoritesDto) {
-    const user = this.userService.findOne(data.userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
     return this.favoriteServices.create(data);
   }
 

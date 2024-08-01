@@ -1,15 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FavoriteRepository } from './repositories/favorites.repository';
 import { FavoritesDto } from './dto/favorites.dto';
+import { UsersRepository } from '../users/repositories/user.repository';
 
 @Injectable()
 export class FavoriteServices {
-  constructor(private favoritesRepository: FavoriteRepository) {}
+  constructor(
+    private favoritesRepository: FavoriteRepository,
+    private userRepository: UsersRepository,
+  ) {}
 
   async create(data: FavoritesDto) {
     const favorite = await this.favoritesRepository.create(data);
 
     const stickerId = await this.favoritesRepository.findOne(data.stickerId);
+
+    const user = this.userRepository.findOne(data.userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     if (stickerId) {
       throw new Error('This is already in your favorites');
