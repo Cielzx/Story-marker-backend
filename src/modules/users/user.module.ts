@@ -40,6 +40,6 @@ import { diskStorage } from 'multer';
       useClass: UsersPrismaRepo,
     },
   ],
-  exports: [UserService],
+  exports: [UserService, UsersRepository],
 })
 export class UsersModule {}
