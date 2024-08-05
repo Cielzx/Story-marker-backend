@@ -16,9 +16,10 @@ import { FavoritesDto } from './dto/favorites.dto';
 export class FavoritesControllers {
   constructor(private readonly favoriteServices: FavoriteServices) {}
 
-  @Post()
+  @Post('')
   @UseGuards(JwtAuth)
   create(@Body() data: FavoritesDto) {
+    console.log(data);
     return this.favoriteServices.create(data);
   }
 

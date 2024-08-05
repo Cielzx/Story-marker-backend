@@ -16,11 +16,13 @@ export class FavoritePrismaRepo implements FavoriteRepository {
       ...data,
     });
 
+    const { userId, stickerId } = data;
+
     const newFavorite = await this.prisma.favorite.create({
       data: {
         id: favorite.id,
-        userId: data.userId,
-        stickerId: data.stickerId,
+        userId,
+        stickerId,
       },
     });
 
