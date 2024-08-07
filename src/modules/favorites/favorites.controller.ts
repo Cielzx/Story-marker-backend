@@ -19,7 +19,6 @@ export class FavoritesControllers {
   @Post('')
   @UseGuards(JwtAuth)
   create(@Body() data: FavoritesDto) {
-    console.log(data);
     return this.favoriteServices.create(data);
   }
 
