@@ -49,7 +49,7 @@ export class AuthService {
 
     return await this.mailerService.sendMail({
       to: user.email,
-      subject: 'Pedido de definição de senha',
+      subject: 'Pedido de Redefinição de senha',
       template: __dirname + '/templates' + '/reset-password',
       context: {
         name: user.name,
