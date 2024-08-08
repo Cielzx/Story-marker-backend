@@ -14,7 +14,6 @@ export class AuthController {
   }
 
   @Post('request-reset-password')
-  @UseGuards(LocalAuth)
   async requestPasswordReset(@Body('email') email: string) {
     return this.authService.requestPasswordReset(email);
   }
