@@ -20,7 +20,6 @@ export class FigurePrismaRepo implements FigureRepository {
     const newFigure = await this.prisma.sticker.create({
       data: {
         id: figure.id,
-        figure_name: data.figure_name,
         figure_image: data.figure_image,
         subCategoryId,
       },

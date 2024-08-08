@@ -3,7 +3,6 @@ import { randomUUID } from 'crypto';
 export class FigureEntity {
   readonly id: string;
 
-  figure_name: string;
   figure_image: string;
   subCategoryId: string;
 

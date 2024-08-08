@@ -51,7 +51,6 @@ model SubCategorie {
 
 model Sticker {
   id String @id
-  figure_name String
   figure_image String?
   sub_category SubCategorie @relation(fields: [subCategoryId], references: [id],onDelete: Cascade)
   subCategoryId String
