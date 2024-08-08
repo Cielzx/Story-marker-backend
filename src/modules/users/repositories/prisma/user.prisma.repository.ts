@@ -48,7 +48,6 @@ export class UsersPrismaRepo implements UsersRepository {
             sticker: {
               select: {
                 id: true,
-                figure_name: true,
                 figure_image: true,
               },
             },
@@ -76,7 +75,6 @@ export class UsersPrismaRepo implements UsersRepository {
             sticker: {
               select: {
                 id: true,
-                figure_name: true,
                 figure_image: true,
               },
             },

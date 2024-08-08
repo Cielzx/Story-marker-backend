@@ -41,7 +41,6 @@ export class CategoryPrismaRepo implements CategoryRepository {
             stickers: {
               select: {
                 id: true,
-                figure_name: true,
                 figure_image: true,
                 subCategoryId: true,
               },
@@ -74,7 +73,6 @@ export class CategoryPrismaRepo implements CategoryRepository {
             stickers: {
               select: {
                 id: true,
-                figure_name: true,
                 figure_image: true,
                 subCategoryId: true,
               },
