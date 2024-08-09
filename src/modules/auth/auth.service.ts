@@ -35,7 +35,7 @@ export class AuthService {
     const token = uuidv4();
     const expire = new Date();
 
-    expire.setDate(expire.getDate() + 20);
+    expire.setMinutes(expire.getMinutes() + 20);
 
     await this.prismaService.user.update({
       where: { email },
@@ -90,7 +90,7 @@ export class AuthService {
     return {
       token: this.jwtService.sign(
         { email, is_admin: user.is_admin },
-        { subject: user.id },
+        { subject: user.id, expiresIn: '15d' },
       ),
     };
   }
