@@ -35,7 +35,7 @@ export class AuthService {
     const token = uuidv4();
     const expire = new Date();
 
-    expire.setMinutes(expire.getMinutes() + 20);
+    expire.setDate(expire.getDate() + 20);
 
     await this.prismaService.user.update({
       where: { email },
