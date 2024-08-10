@@ -24,10 +24,11 @@ model User {
   profile_image String?
   is_admin Boolean?
   favorites  Favorite[]
-  
 
    @@map("users")
 }
+
+
 
 model Category {
   id String @id

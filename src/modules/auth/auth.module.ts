@@ -11,6 +11,7 @@ import { join } from 'path';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PrismaService } from 'src/database/prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [
     UsersModule,
