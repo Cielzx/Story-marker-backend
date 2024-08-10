@@ -6,6 +6,7 @@ import { UsersPrismaRepo } from './repositories/prisma/user.prisma.repository';
 import { UsersController } from './user.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { WebHookController } from './webhook.controller';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { diskStorage } from 'multer';
       },
     }),
   ],
-  controllers: [UsersController],
+  controllers: [UsersController, WebHookController],
   providers: [
     UserService,
     PrismaService,
