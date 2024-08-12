@@ -6,11 +6,15 @@ import {
 import { UsersRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { MailerService } from '@nestjs-modules/mailer';
 import { v2 as cloud } from 'cloudinary';
 
 @Injectable()
 export class UserService {
-  constructor(private UserRepository: UsersRepository) {}
+  constructor(
+    private UserRepository: UsersRepository,
+    private mailerService: MailerService,
+  ) {}
 
   async create(data: CreateUserDto) {
     const findUser = await this.UserRepository.findByEmail(data.email);
@@ -27,6 +31,24 @@ export class UserService {
   async findAll() {
     const users = await this.UserRepository.findAll();
     return users;
+  }
+
+  async sendUserAccount(email: string) {
+    const user = await this.UserRepository.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return await this.mailerService.sendMail({
+      to: user.email,
+      subject: 'Pedido de Redefinição de senha',
+      template: __dirname + '/templates' + '/send-account',
+      context: {
+        name: user.name,
+        email: user.email,
+        password: process.env.TEMP_PASSWORD,
+      },
+    });
   }
 
   async findOne(id: string) {

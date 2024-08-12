@@ -9,17 +9,41 @@ import {
 import { UserService } from './user.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Request, Response } from 'express';
+import { IsDate } from 'class-validator';
 
 @Controller('webhook')
 export class WebHookController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailerService: MailerService,
+  ) {}
 
   @Post('payment')
   async handlePayment(@Req() req: Request, @Res() res: Response) {
     const event = req.body;
-    console.log(event);
     try {
-      if (event.type === 'payment_sucessfull') {
+      if (
+        event.webhook_event_type === 'order_approved' &&
+        event.order_status === 'paid'
+      ) {
+        const customer = event.customer;
+        const existingUser = await this.userService.findByEmail(customer.email);
+        if (existingUser) {
+          return res.status(HttpStatus.BAD_REQUEST).send('User already exists');
+        }
+
+        const data = {
+          name: customer.full_name,
+          email: customer.email,
+          password: process.env.TEMP_PASSWORD,
+          passwordResetToken: '',
+          passwordResetExpires: null,
+          is_admin: false,
+          profile_image: null,
+        };
+
+        const newUser = await this.userService.create(data);
+
         return res.status(HttpStatus.OK).send(event);
       }
 
