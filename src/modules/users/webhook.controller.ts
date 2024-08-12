@@ -44,7 +44,11 @@ export class WebHookController {
 
         const newUser = await this.userService.create(data);
 
-        return res.status(HttpStatus.OK).send(event);
+        await this.userService.sendUserAccount(newUser.email);
+
+        return res
+          .status(HttpStatus.OK)
+          .send({ event, Succsesc: 'User email sent' });
       }
 
       return res.status(HttpStatus.OK).send(event);
