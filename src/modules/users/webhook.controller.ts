@@ -21,13 +21,13 @@ export class WebHookController {
   @Post('payment')
   async handlePayment(@Req() req: Request, @Res() res: Response) {
     const event = req.body;
-    console.log(event);
     try {
       if (
         event.webhook_event_type === 'order_approved' &&
         event.order_status === 'paid'
       ) {
         const customer = event.customer;
+
         const existingUser = await this.userService.findByEmail(customer.email);
         if (existingUser) {
           return res.status(HttpStatus.BAD_REQUEST).send('User already exists');
@@ -42,7 +42,7 @@ export class WebHookController {
           is_admin: false,
           profile_image: null,
         };
-
+        console.log(data);
         const newUser = await this.userService.create(data);
         console.log(newUser);
         // await this.userService.sendUserAccount(newUser.email);
