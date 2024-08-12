@@ -21,6 +21,7 @@ export class WebHookController {
   @Post('payment')
   async handlePayment(@Req() req: Request, @Res() res: Response) {
     const event = req.body;
+    console.log(event);
     try {
       if (
         event.webhook_event_type === 'order_approved' &&
@@ -43,15 +44,15 @@ export class WebHookController {
         };
 
         const newUser = await this.userService.create(data);
-
-        await this.userService.sendUserAccount(newUser.email);
+        console.log(newUser);
+        // await this.userService.sendUserAccount(newUser.email);
 
         return res
           .status(HttpStatus.OK)
           .send({ event, Succsesc: 'User email sent' });
       }
 
-      return res.status(HttpStatus.OK).send(event);
+      return res.status(HttpStatus.BAD_REQUEST).send(event);
     } catch (error) {
       throw new HttpException(
         'Failed to process webhook',
