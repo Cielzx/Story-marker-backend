@@ -5,6 +5,7 @@ import { CreateUserDto } from '../../dto/create-user.dto';
 import { User } from '../../entities/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { UpdateUserDto } from '../../dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersPrismaRepo implements UsersRepository {
@@ -16,6 +17,9 @@ export class UsersPrismaRepo implements UsersRepository {
       ...data,
     });
 
+    const defaultPassword = process.env.TEMP_PASSWORD; // Senha padrão para todos os novos usuários
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+
     if (!data.is_admin) {
       data.is_admin = false;
     }
@@ -25,7 +29,7 @@ export class UsersPrismaRepo implements UsersRepository {
         id: user.id,
         name: data.name,
         email: data.email,
-        password: data.password,
+        password: hashedPassword,
         is_admin: data.is_admin,
       },
     });

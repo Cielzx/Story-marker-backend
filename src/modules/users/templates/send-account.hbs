@@ -65,7 +65,7 @@
           <!-- container -->
           <table
             class='table1 editable-bg-color bg_color_303f9f'
-            bgcolor='#303f9f'
+            bgcolor='#432980'
             width='600'
             align='center'
             border='0'
@@ -125,7 +125,7 @@
                         <img
                           editable='true'
                           mc:edit='image003'
-                          src='https://media-public.canva.com/DKL6c/MAFSBODKL6c/1/t.png'
+                          src='https://images2.imgbox.com/31/49/RXm9CPJw_o.png'
                           width='230'
                           style='display:block; line-height:0; font-size:0; border:0;'
                           border='0'
@@ -206,13 +206,33 @@
                     >
                       <div class='editable-text'>
                         <span class='text_container'>
-                          <multiline>
+                          <multiline class='table1'>
                             Parabéns pela sua compra, aqui embaixo estão os
                             dados de usuario da sua conta na Story Maker.
-                            Lembre-se, de muda sua senha, Login:
-                            {{email}}
-                            Senha:
-                            {{password}}
+                            Lembre-se, de mudar sua senha:
+                            <table
+                              class='table1'
+                              width=''
+                              align='center'
+                              border='0'
+                              cellspacing='0'
+                              cellpadding='4'
+                            >
+                              <tr>
+                                <td style='font-size:25'>
+                                  Login:
+                                  {{email}}
+                                </td>
+
+                              </tr>
+                              <tr>
+                                <td style='font-size:25'>
+                                  Senha:
+                                  {{password}}
+                                </td>
+
+                              </tr>
+                            </table>
 
                             clique no link abaixo:
                           </multiline>
@@ -250,9 +270,9 @@
                               <span class='text_container'>
                                 <multiline>
                                   <a
-                                    href='{{resetUrl}}'
+                                    href='{{accessUrl}}'
                                     style='text-decoration: none; color: #ffffff;'
-                                  >Redefinir Senha</a>
+                                  >Entrar</a>
                                 </multiline>
                               </span>
                             </div>

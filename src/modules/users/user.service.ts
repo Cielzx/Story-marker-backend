@@ -8,6 +8,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { v2 as cloud } from 'cloudinary';
+import { plainToInstance } from 'class-transformer';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -30,25 +32,32 @@ export class UserService {
 
   async findAll() {
     const users = await this.UserRepository.findAll();
-    return users;
+    return plainToInstance(User, users);
   }
 
   async sendUserAccount(email: string) {
-    const user = await this.UserRepository.findByEmail(email);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    try {
+      const user = await this.UserRepository.findByEmail(email);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
 
-    return await this.mailerService.sendMail({
-      to: user.email,
-      subject: 'Pedido de Redefinição de senha',
-      template: __dirname + '/templates' + '/send-account',
-      context: {
-        name: user.name,
-        email: user.email,
-        password: process.env.TEMP_PASSWORD,
-      },
-    });
+      const accessUrl = `story-makers-beta.vercel.app/login`;
+
+      return await this.mailerService.sendMail({
+        to: user.email,
+        subject: 'Parabéns pela sua compra ^^',
+        template: __dirname + '/templates' + '/send-account',
+        context: {
+          name: user.name,
+          email: user.email,
+          password: process.env.TEMP_PASSWORD,
+          accessUrl,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async findOne(id: string) {

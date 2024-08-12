@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Request, Response } from 'express';
 import { IsDate } from 'class-validator';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('webhook')
 export class WebHookController {
@@ -20,21 +21,21 @@ export class WebHookController {
 
   @Post('payment')
   async handlePayment(@Req() req: Request, @Res() res: Response) {
-    const event = req.body;
     try {
+      const event = req.body;
       if (
         event.webhook_event_type === 'order_approved' &&
         event.order_status === 'paid'
       ) {
-        const customer = event.customer;
+        const customer = event.Customer;
 
         const existingUser = await this.userService.findByEmail(customer.email);
         if (existingUser) {
           return res.status(HttpStatus.BAD_REQUEST).send('User already exists');
         }
 
-        const data = {
-          name: customer.full_name,
+        const data: CreateUserDto = {
+          name: customer.first_name,
           email: customer.email,
           password: process.env.TEMP_PASSWORD,
           passwordResetToken: '',
@@ -42,10 +43,8 @@ export class WebHookController {
           is_admin: false,
           profile_image: null,
         };
-        console.log(data);
         const newUser = await this.userService.create(data);
-        console.log(newUser);
-        // await this.userService.sendUserAccount(newUser.email);
+        await this.userService.sendUserAccount(newUser.email);
 
         return res
           .status(HttpStatus.OK)
