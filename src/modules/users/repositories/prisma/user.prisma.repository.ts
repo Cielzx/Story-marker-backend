@@ -57,6 +57,20 @@ export class UsersPrismaRepo implements UsersRepository {
             },
           },
         },
+        subscription: {
+          select: {
+            id: true,
+            next_payment: true,
+            start_date: true,
+            status: true,
+            plan: {
+              select: {
+                name: true,
+                frequency: true,
+              },
+            },
+          },
+        },
       },
     });
     return users;
@@ -80,6 +94,20 @@ export class UsersPrismaRepo implements UsersRepository {
               select: {
                 id: true,
                 figure_image: true,
+              },
+            },
+          },
+        },
+        subscription: {
+          select: {
+            id: true,
+            next_payment: true,
+            start_date: true,
+            status: true,
+            plan: {
+              select: {
+                name: true,
+                frequency: true,
               },
             },
           },

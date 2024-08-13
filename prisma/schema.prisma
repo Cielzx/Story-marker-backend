@@ -23,9 +23,33 @@ model User {
   passwordResetExpires DateTime?
   profile_image String?
   is_admin Boolean?
-  favorites  Favorite[]
+  favorites Favorite[]
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String? @unique()
 
    @@map("users")
+}
+
+model Subscription {
+  id String @id @default(uuid())
+  start_date DateTime
+  next_payment DateTime
+  status String
+  plan Plan @relation(fields: [planId], references: [id])
+  planId String @unique()
+
+  user User?
+
+
+  @@map("subscriptions")
+}
+
+model Plan {
+  id String @id @default(uuid())
+  name String
+  frequency String
+  subscriptions Subscription?
+ 
 }
 
 

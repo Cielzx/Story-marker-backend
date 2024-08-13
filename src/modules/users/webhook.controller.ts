@@ -11,12 +11,13 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Request, Response } from 'express';
 import { IsDate } from 'class-validator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { PrismaService } from 'src/database/prisma.service';
 
 @Controller('webhook')
 export class WebHookController {
   constructor(
     private readonly userService: UserService,
-    private readonly mailerService: MailerService,
+    private readonly prismaService: PrismaService,
   ) {}
 
   @Post('payment')
@@ -28,6 +29,8 @@ export class WebHookController {
         event.order_status === 'paid'
       ) {
         const customer = event.Customer;
+        const { id, start_date, next_payment, status, plan } =
+          event.Subscription;
 
         const existingUser = await this.userService.findByEmail(customer.email);
         if (existingUser) {
@@ -43,12 +46,52 @@ export class WebHookController {
           is_admin: false,
           profile_image: null,
         };
+
         const newUser = await this.userService.create(data);
+
+        const updatedPlan = await this.prismaService.plan.upsert({
+          where: { id: plan.id },
+          create: {
+            id: plan.id,
+            name: plan.name,
+            frequency: plan.frequency,
+          },
+          update: {
+            name: plan.name,
+            frequency: plan.frequency,
+          },
+        });
+
+        const updatedSubscription =
+          await this.prismaService.subscription.upsert({
+            where: { id },
+            create: {
+              id,
+              start_date: new Date(start_date),
+              next_payment: new Date(next_payment),
+              status,
+              planId: updatedPlan.id,
+            },
+            update: {
+              start_date: new Date(start_date),
+              next_payment: new Date(next_payment),
+              status,
+              planId: updatedPlan.id,
+            },
+          });
+
+        await this.prismaService.user.update({
+          where: { email: newUser.email },
+          data: {
+            subscriptionId: updatedSubscription.id,
+          },
+        });
+
         await this.userService.sendUserAccount(newUser.email);
 
         return res
           .status(HttpStatus.OK)
-          .send({ event, Succsesc: 'User email sent' });
+          .send({ newUser, Success: 'User email sent' });
       }
 
       return res.status(HttpStatus.BAD_REQUEST).send(event);
