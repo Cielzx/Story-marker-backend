@@ -45,7 +45,7 @@ export class AuthService {
       },
     });
 
-    const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
+    const resetUrl = `story-makers-beta.vercel.app/reset-password?token=${token}`;
 
     return await this.mailerService.sendMail({
       to: user.email,
