@@ -27,7 +27,7 @@ export class UserService {
 
     const user = await this.UserRepository.create(data);
 
-    return user;
+    return plainToInstance(User, user);
   }
 
   async findAll() {

@@ -102,4 +102,44 @@ export class WebHookController {
       );
     }
   }
+
+  @Post('subscription')
+  async handleSubscription(@Req() req: Request, @Res() res: Response) {
+    try {
+      const event = req.body;
+
+      if (
+        event.webhook_event_type === 'subscription_renewed' &&
+        event.order_status === 'paid'
+      ) {
+        const { id, start_date, next_payment, status, plan } =
+          event.Subscription;
+        const updatedSubscription =
+          await this.prismaService.subscription.update({
+            where: { id },
+            data: {
+              start_date: new Date(start_date),
+              next_payment: new Date(next_payment),
+              status,
+            },
+          });
+
+        await this.prismaService.user.update({
+          where: { email: event.Customer.email },
+          data: {
+            subscriptionId: updatedSubscription.id,
+          },
+        });
+
+        return res
+          .status(HttpStatus.OK)
+          .send({ Success: 'User subscription renewed' });
+      }
+    } catch (error) {
+      throw new HttpException(
+        'Failed to process webhook',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
