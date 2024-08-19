@@ -6,6 +6,7 @@ import { User } from '../../entities/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 export class UsersPrismaRepo implements UsersRepository {
