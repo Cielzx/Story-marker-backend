@@ -44,12 +44,12 @@ export class figureControllers {
     return this.figureService.update(data, id);
   }
 
-  @Patch('upload-to-svg/:id')
+  @Patch('upload-to-png/:id')
   @UseGuards(JwtAuth)
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'figure_image', maxCount: 1 }]),
   )
-  upload(
+  uploadPng(
     @UploadedFiles()
     files: {
       figure_image?: Express.Multer.File[];
@@ -57,15 +57,15 @@ export class figureControllers {
     @Param('id') id: string,
   ) {
     const { figure_image } = files;
-    return this.figureService.upload(figure_image[0], id);
+    return this.figureService.uploadPng(figure_image[0], id);
   }
 
-  @Patch('upload-to-png/:id')
+  @Patch('upload-to-svg/:id')
   @UseGuards(JwtAuth)
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'figure_image', maxCount: 1 }]),
   )
-  uploadPng(
+  upload(
     @UploadedFiles()
     files: {
       figure_image?: Express.Multer.File[];

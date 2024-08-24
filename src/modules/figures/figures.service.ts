@@ -60,7 +60,7 @@ export class FigureServices {
 
     const imageUpload = await cloud.uploader.upload(
       figure_image.path,
-      { resource_type: 'image' },
+      { resource_type: 'image', format: 'png' },
       (error, result) => {
         return result;
       },
