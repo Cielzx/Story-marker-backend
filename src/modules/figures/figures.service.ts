@@ -45,6 +45,37 @@ export class FigureServices {
     return stickerUpdate;
   }
 
+  async uploadPng(figure_image: Express.Multer.File, id: string) {
+    cloud.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
+    });
+
+    const findFigure = await this.figureRepository.findOne(id);
+
+    if (!findFigure) {
+      throw new NotFoundException('Sticker not found!');
+    }
+
+    const imageUpload = await cloud.uploader.upload(
+      figure_image.path,
+      { resource_type: 'image' },
+      (error, result) => {
+        return result;
+      },
+    );
+
+    const update = await this.figureRepository.update(
+      {
+        figure_image: imageUpload.secure_url,
+      },
+      id,
+    );
+
+    return update;
+  }
+
   async upload(figure_image: Express.Multer.File, id: string) {
     cloud.config({
       cloud_name: process.env.CLOUD_NAME,
