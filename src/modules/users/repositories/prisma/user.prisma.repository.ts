@@ -18,7 +18,7 @@ export class UsersPrismaRepo implements UsersRepository {
       ...data,
     });
 
-    const defaultPassword = process.env.TEMP_PASSWORD; // Senha padrão para todos os novos usuários
+    const defaultPassword = process.env.TEMP_PASSWORD;
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
     if (!data.is_admin) {

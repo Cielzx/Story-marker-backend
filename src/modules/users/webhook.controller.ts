@@ -87,15 +87,14 @@ export class WebHookController {
           },
         });
 
-        await this.userService.sendUserAccount(newUser.email);
-
         return res
           .status(HttpStatus.OK)
-          .send({ newUser, Success: 'User email sent' });
+          .send({ newUser, Success: 'User Created' });
       }
 
       return res.status(HttpStatus.BAD_REQUEST).send(event);
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         'Failed to process webhook',
         HttpStatus.INTERNAL_SERVER_ERROR,
