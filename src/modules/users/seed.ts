@@ -1,12 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { User } from '../src/modules/users/entities/user.entity';
+import { User } from './entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 
-const prisma = new PrismaClient();
-
 async function main() {
+  const prisma = new PrismaClient();
   const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASS, 10);
 
   const existingUser = await prisma.user.findUnique({
