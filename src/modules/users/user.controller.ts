@@ -23,6 +23,11 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
+  @Post('')
+  create(@Body() data: CreateUserDto) {
+    return this.userService.create(data);
+  }
+
   @Get('')
   findAll() {
     return this.userService.findAll();
