@@ -9,3 +9,13 @@ export class FigureDto {
   @IsNotEmpty()
   subCategoryId: string;
 }
+
+export class UserStickerDto {
+  @IsString()
+  @IsOptional()
+  figure_image: string;
+
+  @IsString()
+  @IsOptional()
+  subCategoryId: string;
+}

@@ -75,6 +75,7 @@ export class CategoryPrismaRepo implements CategoryRepository {
                 id: true,
                 figure_image: true,
                 subCategoryId: true,
+                created_at: true,
               },
             },
           },

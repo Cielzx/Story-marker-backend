@@ -72,6 +72,13 @@ export class UsersPrismaRepo implements UsersRepository {
             },
           },
         },
+        my_stickers: {
+          select: {
+            id: true,
+            figure_image: true,
+            userId: true,
+          },
+        },
       },
     });
     return users;
@@ -111,6 +118,13 @@ export class UsersPrismaRepo implements UsersRepository {
                 frequency: true,
               },
             },
+          },
+        },
+        my_stickers: {
+          select: {
+            id: true,
+            figure_image: true,
+            userId: true,
           },
         },
       },

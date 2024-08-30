@@ -10,15 +10,32 @@ import * as sharp from 'sharp';
 import * as potrace from 'potrace';
 import { promisify } from 'util';
 import { FigureRepository } from './repositories/figures.repository';
+import { PrismaService } from 'src/database/prisma.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FigureServices {
-  constructor(private figureRepository: FigureRepository) {}
+  constructor(
+    private figureRepository: FigureRepository,
+    private prisma: PrismaService,
+  ) {}
 
   async create(data: FigureDto) {
     const figure = await this.figureRepository.create(data);
 
     return figure;
+  }
+
+  async userStickerCreate(userId: string, stickerData: any) {
+    const userSticker = await this.prisma.sticker.create({
+      data: {
+        id: uuidv4(),
+        ...stickerData,
+        userId,
+      },
+    });
+
+    return userSticker;
   }
 
   async findAll() {
@@ -152,9 +169,23 @@ export class FigureServices {
 
   async remove(id: string) {
     if (!id) {
-      throw new NotFoundException('Figure not found!');
+      throw new NotFoundException('Sticker not found!');
     }
     await this.figureRepository.delete(id);
+
+    return;
+  }
+
+  async userStickerRemove(id: string, userId: string) {
+    if (!id) {
+      throw new NotFoundException('Sticker not found!');
+    }
+    await this.prisma.sticker.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
 
     return;
   }

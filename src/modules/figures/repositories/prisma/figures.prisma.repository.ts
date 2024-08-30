@@ -29,7 +29,14 @@ export class FigurePrismaRepo implements FigureRepository {
   }
 
   async findAll(): Promise<FigureEntity[]> {
-    const AllFigures = await this.prisma.sticker.findMany();
+    const AllFigures = await this.prisma.sticker.findMany({
+      select: {
+        id: true,
+        figure_image: true,
+        subCategoryId: true,
+        userId: true,
+      },
+    });
 
     return AllFigures;
   }

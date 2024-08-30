@@ -24,6 +24,7 @@ model User {
   profile_image String?
   is_admin Boolean?
   favorites Favorite[]
+  my_stickers Sticker[]
   subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
   subscriptionId String? @unique()
 
@@ -77,9 +78,12 @@ model SubCategorie {
 model Sticker {
   id String @id
   figure_image String?
-  sub_category SubCategorie @relation(fields: [subCategoryId], references: [id],onDelete: Cascade)
-  subCategoryId String
+  sub_category SubCategorie? @relation(fields: [subCategoryId], references: [id],onDelete: Cascade)
+  subCategoryId String?
   favorites    Favorite[]
+  userId String? 
+  user User? @relation(fields: [userId], references: [id],onDelete: Cascade)
+  created_at DateTime @default(now())
 
   @@map("figures")
 }
