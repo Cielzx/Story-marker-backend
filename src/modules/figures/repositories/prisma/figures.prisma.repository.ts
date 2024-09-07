@@ -35,6 +35,7 @@ export class FigurePrismaRepo implements FigureRepository {
         figure_image: true,
         subCategoryId: true,
         userId: true,
+        created_at: true,
       },
     });
 
@@ -47,6 +48,13 @@ export class FigurePrismaRepo implements FigureRepository {
     }
     const figure = await this.prisma.sticker.findUnique({
       where: { id },
+      select: {
+        id: true,
+        figure_image: true,
+        subCategoryId: true,
+        userId: true,
+        created_at: true,
+      },
     });
 
     return plainToInstance(FigureEntity, figure);

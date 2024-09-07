@@ -34,9 +34,20 @@ export class figureControllers {
     return this.figureService.userStickerCreate(userId, data);
   }
 
+  @Post('icon')
+  @UseGuards(JwtAuth, AdminGuard)
+  iconCreate(@Body() data: { icon_image: string }) {
+    return this.figureService.IconCreate(data);
+  }
+
   @Get('')
   findAll() {
     return this.figureService.findAll();
+  }
+
+  @Get('icons')
+  iconFindAll() {
+    return this.figureService.iconFindAll();
   }
 
   @Get(':id')
@@ -66,6 +77,20 @@ export class figureControllers {
     return this.figureService.uploadPng(figure_image[0], id);
   }
 
+  @Patch('icon/:id')
+  @UseGuards(JwtAuth)
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'icon_image', maxCount: 1 }]))
+  iconUpload(
+    @UploadedFiles()
+    files: {
+      icon_image?: Express.Multer.File[];
+    },
+    @Param('id') id: string,
+  ) {
+    const { icon_image } = files;
+    return this.figureService.iconUpload(icon_image[0], id);
+  }
+
   @Patch('upload-to-svg/:id')
   @UseGuards(JwtAuth)
   @UseInterceptors(
@@ -88,6 +113,14 @@ export class figureControllers {
   delete(@Param('id') id: string) {
     return this.figureService.remove(id);
   }
+
+  @Delete('icon/:id')
+  @HttpCode(204)
+  @UseGuards(JwtAuth, AdminGuard)
+  iconRemove(@Param('id') id: string) {
+    return this.figureService.iconRemove(id);
+  }
+
   @Delete('user-sticker/:id/:userId')
   @HttpCode(204)
   @UseGuards(JwtAuth, AdminGuard)

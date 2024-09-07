@@ -38,6 +38,22 @@ export class FigureServices {
     return userSticker;
   }
 
+  async IconCreate(data: { icon_image: string }) {
+    const icon = await this.prisma.icons.create({
+      data: {
+        id: uuidv4(),
+        ...data,
+      },
+    });
+
+    return icon;
+  }
+
+  async iconFindAll() {
+    const allIcons = await this.prisma.icons.findMany();
+    return allIcons;
+  }
+
   async findAll() {
     const allFigures = await this.figureRepository.findAll();
     return allFigures;
@@ -145,6 +161,45 @@ export class FigureServices {
     }
   }
 
+  async iconUpload(icon_image: Express.Multer.File, id: string) {
+    cloud.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
+    });
+
+    const findIcon = await this.prisma.icons.findUnique({
+      where: { id },
+    });
+    if (!findIcon) {
+      throw new NotFoundException('Sticker not found!');
+    }
+
+    try {
+      const icon = await cloud.uploader.upload(
+        icon_image.path,
+        { resource_type: 'image', format: 'png' },
+        (error, result) => {
+          return result;
+        },
+      );
+
+      const update = await this.prisma.icons.update({
+        where: { id },
+        data: {
+          icon_image: icon.secure_url,
+        },
+      });
+
+      return update;
+    } catch (error) {
+      console.error('Error during image processing:', error);
+      throw new InternalServerErrorException(
+        'An error occurred during image processing',
+      );
+    }
+  }
+
   async convertPngToSvg(imagePath: string): Promise<string> {
     try {
       const grayScaleBuffer = await sharp(imagePath).greyscale().toBuffer();
@@ -172,6 +227,18 @@ export class FigureServices {
       throw new NotFoundException('Sticker not found!');
     }
     await this.figureRepository.delete(id);
+
+    return;
+  }
+
+  async iconRemove(id: string) {
+    if (!id) {
+      throw new NotFoundException('Icon not found!');
+    }
+
+    await this.prisma.icons.delete({
+      where: { id },
+    });
 
     return;
   }

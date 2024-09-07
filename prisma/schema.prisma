@@ -88,6 +88,14 @@ model Sticker {
   @@map("figures")
 }
 
+model Icons{
+  id String @id
+  icon_image String?
+  created_at  DateTime @default(now())
+
+  @@map("icons")
+}
+
 model Favorite {
   id         String   @id @default(uuid())
   userId     String
