@@ -130,8 +130,13 @@ export class FigureServices {
         );
       }
 
+      const coloredSvgContent = svgContent.replace(
+        /<svg([^>]+)>/,
+        `<svg$1 fill="#FFFFFF">`,
+      );
+
       const svgUpload = await cloud.uploader.upload(
-        `data:image/svg+xml;base64,${Buffer.from(svgContent).toString('base64')}`,
+        `data:image/svg+xml;base64,${Buffer.from(coloredSvgContent).toString('base64')}`,
         { resource_type: 'image', format: 'svg' },
       );
 
