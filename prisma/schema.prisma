@@ -96,6 +96,14 @@ model Icons{
   @@map("icons")
 }
 
+model Font {
+  id        String     @id @default(uuid())
+  name      String
+  fileUrl   String
+  format    String
+  createdAt DateTime @default(now())
+}
+
 model Favorite {
   id         String   @id @default(uuid())
   userId     String

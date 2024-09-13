@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -8,6 +9,7 @@ import {
   Patch,
   Post,
   Req,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -17,11 +19,57 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuth } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/adm-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { CreateFontDto } from './dto/create-font.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
+
+  @Post('fonts')
+  @UseGuards(JwtAuth, AdminGuard)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/fonts',
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, uniqueSuffix + '-' + file.originalname);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(otf|ttf)$/)) {
+          return cb(
+            new BadRequestException('Only font files are allowed!'),
+            false,
+          );
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  async uploadFont(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: { name: string },
+  ) {
+    const font = await this.userService.createFont({
+      name: data.name,
+      fileUrl: `/uploads/fonts/${file.filename}`,
+      format: file.mimetype,
+    });
+
+    return font;
+  }
+
+  @Get('fonts')
+  async getAllFonts() {
+    return this.userService.getAllFonts();
+  }
 
   @Get('')
   findAll() {
@@ -62,5 +110,12 @@ export class UsersController {
   @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
+  }
+
+  @Delete('fonts/:id')
+  @UseGuards(JwtAuth, AdminGuard)
+  @HttpCode(204)
+  removeFont(@Param('id') id: string) {
+    return this.userService.removeFont(id);
   }
 }

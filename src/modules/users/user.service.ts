@@ -10,12 +10,15 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { v2 as cloud } from 'cloudinary';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entities/user.entity';
+import { PrismaService } from 'src/database/prisma.service';
+import { CreateFontDto } from './dto/create-font.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     private UserRepository: UsersRepository,
     private mailerService: MailerService,
+    private prisma: PrismaService,
   ) {}
 
   async create(data: CreateUserDto) {
@@ -28,6 +31,16 @@ export class UserService {
     const user = await this.UserRepository.create(data);
 
     return plainToInstance(User, user);
+  }
+
+  async createFont(data: CreateFontDto) {
+    return this.prisma.font.create({
+      data,
+    });
+  }
+
+  async getAllFonts() {
+    return this.prisma.font.findMany();
   }
 
   async findAll() {
@@ -108,6 +121,14 @@ export class UserService {
     );
 
     return update;
+  }
+
+  async removeFont(id: string) {
+    await this.prisma.font.delete({
+      where: { id },
+    });
+
+    return;
   }
 
   async remove(id: string) {
