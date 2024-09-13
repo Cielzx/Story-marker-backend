@@ -37,9 +37,7 @@ export class UsersController {
       storage: diskStorage({
         destination: './uploads/fonts',
         filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          cb(null, uniqueSuffix + '-' + file.originalname);
+          cb(null, file.originalname);
         },
       }),
       fileFilter: (req, file, cb) => {
