@@ -3,7 +3,11 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "assets": ["**/auth/templates/*", "**/users/templates/**"],
+    "assets": [
+      "**/auth/templates/*",
+      "**/users/templates/**",
+      "**/users/uploads/**"
+    ],
 
     "deleteOutDir": true
   }

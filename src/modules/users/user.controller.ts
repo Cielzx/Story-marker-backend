@@ -35,7 +35,7 @@ export class UsersController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/fonts',
+        destination: './src/modules/users/uploads/fonts',
         filename: (req, file, cb) => {
           cb(null, file.originalname);
         },
@@ -57,7 +57,7 @@ export class UsersController {
   ) {
     const font = await this.userService.createFont({
       name: data.name,
-      fileUrl: `/uploads/fonts/${file.filename}`,
+      fileUrl: `/users/uploads/fonts/${file.filename}`,
       format: file.mimetype,
     });
 
