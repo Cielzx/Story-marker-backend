@@ -9,13 +9,13 @@ import { diskStorage } from 'multer';
 import { WebHookController } from './webhook.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join('src', 'modules', 'users', 'uploads'),
+      rootPath: resolve('src', 'modules', 'users', 'uploads'),
       serveRoot: '/uploads',
     }),
     MulterModule.register({

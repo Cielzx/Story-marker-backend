@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Res,
   Get,
   HttpCode,
   Param,
@@ -19,6 +20,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuth } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/adm-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { join, resolve } from 'path';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
@@ -67,6 +69,19 @@ export class UsersController {
   @Get('fonts')
   async getAllFonts() {
     return this.userService.getAllFonts();
+  }
+
+  @Get('fonts/:filename')
+  getFont(@Param('filename') filename: string, @Res() res) {
+    const filePath = resolve(
+      'src',
+      'modules',
+      'users',
+      'uploads',
+      'fonts',
+      filename,
+    );
+    return res.sendFile(filePath);
   }
 
   @Get('')
