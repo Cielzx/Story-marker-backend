@@ -15,9 +15,10 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: resolve('modules', 'users', 'uploads'),
+      rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
     }),
+
     MulterModule.register({
       storage: diskStorage({
         destination: './temp',

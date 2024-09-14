@@ -73,7 +73,9 @@ export class UsersController {
 
   @Get('fonts/:filename')
   getFont(@Param('filename') filename: string, @Res() res) {
-    const filePath = resolve('modules', 'users', 'uploads', 'fonts', filename);
+    console.log('Uploads Path:', join(process.cwd(), 'uploads'));
+
+    const filePath = join(__dirname, 'uploads', 'fonts', filename);
     return res.sendFile(filePath);
   }
 
