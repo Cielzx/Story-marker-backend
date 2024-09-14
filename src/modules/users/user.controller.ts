@@ -20,7 +20,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuth } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/adm-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { join, resolve } from 'path';
+import * as path from 'path';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
@@ -37,7 +37,7 @@ export class UsersController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './src/modules/users/uploads/fonts',
+        destination: path.join(process.cwd(), 'uploads/fonts'),
         filename: (req, file, cb) => {
           cb(null, file.originalname);
         },
@@ -73,9 +73,7 @@ export class UsersController {
 
   @Get('fonts/:filename')
   getFont(@Param('filename') filename: string, @Res() res) {
-    console.log('Uploads Path:', join(process.cwd(), 'uploads'));
-
-    const filePath = join(__dirname, 'uploads', 'fonts', filename);
+    const filePath = path.join(process.cwd(), 'uploads/fonts', filename);
     return res.sendFile(filePath);
   }
 
