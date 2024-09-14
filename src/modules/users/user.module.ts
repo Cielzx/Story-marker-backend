@@ -15,7 +15,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'modules', 'users', 'uploads'),
+      rootPath: join('src', 'modules', 'users', 'uploads'),
       serveRoot: '/uploads',
     }),
     MulterModule.register({
