@@ -57,7 +57,7 @@ export class UsersController {
   ) {
     const font = await this.userService.createFont({
       name: data.name,
-      fileUrl: `/users/uploads/fonts/${file.filename}`,
+      fileUrl: `/uploads/fonts/${file.filename}`,
       format: file.mimetype,
     });
 
