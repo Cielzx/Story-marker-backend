@@ -54,6 +54,7 @@ export class UsersPrismaRepo implements UsersRepository {
               select: {
                 id: true,
                 figure_image: true,
+                is_favorited: true,
               },
             },
           },
@@ -102,6 +103,7 @@ export class UsersPrismaRepo implements UsersRepository {
               select: {
                 id: true,
                 figure_image: true,
+                is_favorited: true,
               },
             },
           },
