@@ -36,6 +36,7 @@ export class FigurePrismaRepo implements FigureRepository {
         subCategoryId: true,
         userId: true,
         created_at: true,
+        is_favorited: true,
       },
     });
 
@@ -54,6 +55,7 @@ export class FigurePrismaRepo implements FigureRepository {
         subCategoryId: true,
         userId: true,
         created_at: true,
+        is_favorited: true,
       },
     });
 
