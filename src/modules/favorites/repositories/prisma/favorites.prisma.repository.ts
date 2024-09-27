@@ -30,7 +30,18 @@ export class FavoritePrismaRepo implements FavoriteRepository {
   }
 
   async findAll(): Promise<FavoriteEntity[]> {
-    const favorites = await this.prisma.favorite.findMany();
+    const favorites = await this.prisma.favorite.findMany({
+      select: {
+        id: true,
+        userId: true,
+        stickerId: true,
+        sticker: {
+          select: {
+            is_favorited: true,
+          },
+        },
+      },
+    });
 
     return favorites;
   }
@@ -39,6 +50,16 @@ export class FavoritePrismaRepo implements FavoriteRepository {
     const favorite = await this.prisma.favorite.findUnique({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        userId: true,
+        stickerId: true,
+        sticker: {
+          select: {
+            is_favorited: true,
+          },
+        },
       },
     });
 
