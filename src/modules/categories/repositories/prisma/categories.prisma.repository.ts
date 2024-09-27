@@ -40,6 +40,8 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
           select: {
             id: true,
             figure_image: true,
+            subCategoryId: true,
+            is_favorited: true,
           },
         },
       },
@@ -66,6 +68,7 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
             id: true,
             figure_image: true,
             subCategoryId: true,
+            is_favorited: true,
           },
         },
       },
@@ -89,15 +92,6 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
 
     return updateSubCategories;
   }
-
-  // async findByName(item_name:string): Promise<CategoriesEntity> {
-  //   const categorie = await this.prisma.categories.findUnique({
-  //       where:{
-  //           item_name
-  //       }
-  //   });
-  //   return categorie;
-  // }
 
   async delete(id: string): Promise<void> {
     await this.prisma.subCategorie.delete({
