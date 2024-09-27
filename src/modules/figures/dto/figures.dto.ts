@@ -1,9 +1,13 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class FigureDto {
   @IsString()
   @IsOptional()
   figure_image: string;
+
+  @IsBoolean()
+  @IsOptional()
+  is_favorited: boolean;
 
   @IsString()
   @IsNotEmpty()
