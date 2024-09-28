@@ -34,6 +34,7 @@ export class CategoryPrismaRepo implements CategoryRepository {
         id: true,
         category_name: true,
         cover_image: true,
+        created_at: true,
         categories: {
           select: {
             id: true,
@@ -49,6 +50,9 @@ export class CategoryPrismaRepo implements CategoryRepository {
             },
           },
         },
+      },
+      orderBy: {
+        created_at: 'asc',
       },
     });
     return allCategories;

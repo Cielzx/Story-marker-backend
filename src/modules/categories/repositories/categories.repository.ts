@@ -14,7 +14,5 @@ export abstract class CategoriesRepository {
     id: string,
   ): Promise<CategoriesEntity>;
 
-  //   abstract findByName(item_name: string): Promise<Categories>;
-
   abstract delete(id: string): Promise<void> | void;
 }

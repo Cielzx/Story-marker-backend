@@ -38,6 +38,9 @@ export class FigurePrismaRepo implements FigureRepository {
         created_at: true,
         is_favorited: true,
       },
+      orderBy: {
+        created_at: 'asc',
+      },
     });
 
     return AllFigures;

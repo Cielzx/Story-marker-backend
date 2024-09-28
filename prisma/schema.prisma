@@ -53,13 +53,12 @@ model Plan {
  
 }
 
-
-
 model Category {
   id String @id
   category_name String
   cover_image String?
   categories SubCategorie[]
+  created_at DateTime @default(now())
 
    @@map("category")
 }
@@ -71,6 +70,7 @@ model SubCategorie {
   categoryId String
   category Category @relation(fields: [categoryId], references: [id],onDelete: Cascade)
   stickers Sticker[]
+  created_at DateTime @default(now())
 
    @@map("categories")
 }

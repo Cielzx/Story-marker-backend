@@ -36,6 +36,7 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
         item_name: true,
         cover_image: true,
         categoryId: true,
+        created_at: true,
         stickers: {
           select: {
             id: true,
@@ -45,6 +46,7 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
           },
         },
       },
+      orderBy: { created_at: 'asc' },
     });
     return categories;
   }
