@@ -49,6 +49,9 @@ export class CategoryPrismaRepo implements CategoryRepository {
               },
             },
           },
+          orderBy: {
+            created_at: 'asc',
+          },
         },
       },
       orderBy: {
