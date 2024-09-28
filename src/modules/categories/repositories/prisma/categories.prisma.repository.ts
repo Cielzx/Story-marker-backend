@@ -42,7 +42,11 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
             id: true,
             figure_image: true,
             subCategoryId: true,
+            created_at: true,
             is_favorited: true,
+          },
+          orderBy: {
+            created_at: 'asc',
           },
         },
       },
