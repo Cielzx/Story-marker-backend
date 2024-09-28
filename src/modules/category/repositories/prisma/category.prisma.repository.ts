@@ -82,7 +82,7 @@ export class CategoryPrismaRepo implements CategoryRepository {
           select: {
             id: true,
             item_name: true,
-            cover_image: true,
+            created_at: true,
             stickers: {
               select: {
                 id: true,
@@ -91,7 +91,13 @@ export class CategoryPrismaRepo implements CategoryRepository {
                 is_favorited: true,
                 created_at: true,
               },
+              orderBy: {
+                created_at: 'asc',
+              },
             },
+          },
+          orderBy: {
+            created_at: 'asc',
           },
         },
       },

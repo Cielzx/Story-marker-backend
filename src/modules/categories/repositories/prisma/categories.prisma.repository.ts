@@ -69,12 +69,17 @@ export class CategoriesPrismaRepo implements CategoriesRepository {
         item_name: true,
         cover_image: true,
         categoryId: true,
+        created_at: true,
         stickers: {
           select: {
             id: true,
             figure_image: true,
             subCategoryId: true,
+            created_at: true,
             is_favorited: true,
+          },
+          orderBy: {
+            created_at: 'asc',
           },
         },
       },
