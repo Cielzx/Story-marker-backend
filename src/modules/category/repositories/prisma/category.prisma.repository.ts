@@ -39,6 +39,7 @@ export class CategoryPrismaRepo implements CategoryRepository {
           select: {
             id: true,
             item_name: true,
+            created_at: true,
             stickers: {
               select: {
                 id: true,
@@ -46,6 +47,9 @@ export class CategoryPrismaRepo implements CategoryRepository {
                 subCategoryId: true,
                 is_favorited: true,
                 created_at: true,
+              },
+              orderBy: {
+                created_at: 'asc',
               },
             },
           },
