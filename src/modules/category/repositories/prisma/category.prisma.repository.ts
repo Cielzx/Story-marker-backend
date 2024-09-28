@@ -83,6 +83,7 @@ export class CategoryPrismaRepo implements CategoryRepository {
             id: true,
             item_name: true,
             created_at: true,
+            cover_image: true,
             stickers: {
               select: {
                 id: true,
